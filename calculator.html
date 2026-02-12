@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>calculator</title>
+</head>
+<body>
+    <section>
+        <div class="calculator" id="calculator">
+<style>
+  :root{
+    --bg:#0b0c10;
+    --panel:#0f1720;
+    --soft:#12141a;
+    --neon1:#00e5ff;
+    --neon2:#a22cff;
+    --accent:#0a84ff;
+    --muted:#9aa3b2;
+    --glass: rgba(255,255,255,0.04);
+    --shadow: 0 8px 30px rgba(0,0,0,0.7);
+    --radius:14px;
+  }
+
+  *{box-sizing:border-box; font-family: "Segoe UI", Tahoma, Arial, sans-serif}
+  html,body{height:100%; margin:0; background: radial-gradient(1200px 600px at 10% 10%, rgba(162,44,255,0.06), transparent 8%), radial-gradient(900px 400px at 90% 90%, rgba(0,229,255,0.03), transparent 8%), var(--bg); color:#fff; -webkit-font-smoothing:antialiased}
+  .wrap{
+    max-width:980px;
+    margin:40px auto;
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    gap:28px;
+    padding:20px;
+  }
+
+  /* left: calculator */
+  .calc {
+    background: linear-gradient(180deg,var(--panel), #0b0e13);
+    border-radius:var(--radius);
+    padding:22px;
+    box-shadow: var(--shadow);
+    border:1px solid rgba(255,255,255,0.03);
+    position:relative;
+    overflow:hidden;
+  }
+  .brand {
+    display:flex; align-items:center; gap:12px; margin-bottom:12px;
+  }
+  .logo {
+    width:46px; height:46px; background:linear-gradient(135deg,var(--neon1),var(--neon2));
+    border-radius:10px; box-shadow:0 6px 30px rgba(162,44,255,0.12), 0 0 18px rgba(0,229,255,0.06) inset;
+    display:flex; align-items:center; justify-content:center; font-weight:700; color:#041018;
+  }
+  .brand h1{ font-size:18px; margin:0 }
+  .brand p{ margin:0; font-size:12px; color:var(--muted) }
+
+  .display-wrap{
+    background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius:12px;
+    padding:12px;
+    margin-bottom:14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.6);
+    display:flex; flex-direction:column;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+
+  .sub-display {
+    display:flex; justify-content:space-between; color:var(--muted); font-size:13px; margin-bottom:6px;
+  }
+
+  #display {
+    height:72px;
+    font-size:32px;
+    text-align:right;
+    padding:8px 12px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border-radius:8px;
+    color: #e6f7ff;
+    letter-spacing:0.6px;
+    overflow-x:auto;
+    white-space:nowrap;
+  }
+
+  .kbd {
+    display:grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap:10px;
+    margin-top:16px;
+  }
+
+  button.key {
+    border: none;
+    padding:14px;
+    border-radius:10px;
+    background: linear-gradient(180deg,#0f1620,#0b0f16);
+    color:#dbe9ff;
+    font-size:15px;
+    cursor:pointer;
+    box-shadow: 0 6px 20px rgba(2,6,23,0.6);
+    transition:transform .06s ease, box-shadow .06s ease;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  button.key:hover{ transform:translateY(-3px) }
+
+  /* accent keys */
+  .key.accent{
+    background: linear-gradient(180deg, rgba(10,132,255,0.18), rgba(10,132,255,0.08));
+    border: 1px solid rgba(10,132,255,0.22);
+    color: #dff2ff;
+    box-shadow: 0 6px 30px rgba(10,132,255,0.08), 0 0 18px rgba(10,132,255,0.08);
+  }
+
+  /* neon keys */
+  .key.neon {
+    background: linear-gradient(180deg, rgba(162,44,255,0.12), rgba(0,229,255,0.06));
+    border:1px solid rgba(162,44,255,0.16);
+    color:#fff;
+    box-shadow: 0 8px 28px rgba(162,44,255,0.06);
+  }
+
+  .key.equal {
+    grid-column: span 2;
+    background: linear-gradient(90deg, var(--neon1), var(--neon2));
+    color:#041018; font-weight:700; font-size:17px;
+  }
+
+  /* wide keys */
+  .key.wide { grid-column: span 2; }
+
+  /* right panel */
+  .panel {
+    background: linear-gradient(180deg,var(--soft), rgba(255,255,255,0.01));
+    border-radius:var(--radius);
+    padding:18px;
+    box-shadow: var(--shadow);
+    border:1px solid rgba(255,255,255,0.03);
+    height:100%;
+  }
+
+  .panel h2{ margin:0 0 10px 0; font-size:16px }
+  .row { display:flex; gap:8px; align-items:center; margin-bottom:12px }
+
+  input[type="text"], select {
+    width:100%;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid rgba(255,255,255,0.04);
+    background: rgba(0,0,0,0.25);
+    color:#eaf6ff;
+    font-size:14px;
+  }
+
+  .small {
+    width:120px;
+  }
+
+  .convert-btn {
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    background:linear-gradient(90deg,var(--neon1),var(--neon2));
+    color:#041018;
+    font-weight:700;
+    cursor:pointer;
+  }
+
+  .muted { color:var(--muted); font-size:13px; margin-bottom:8px }
+
+  .deg-toggle {
+    display:flex; align-items:center; gap:8px;
+    background:rgba(255,255,255,0.02); padding:8px; border-radius:8px;
+  }
+
+  .history {
+    margin-top:12px;
+    max-height:160px; overflow:auto;
+    padding:8px; border-radius:8px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0));
+    border:1px dashed rgba(255,255,255,0.02);
+  }
+  .history .item { font-size:13px; color:var(--muted); margin-bottom:6px }
+
+  /* responsive */
+  @media (max-width:920px){
+    .wrap { grid-template-columns: 1fr; padding:10px; gap:16px }
+    .kbd { grid-template-columns: repeat(4, 1fr); }
+    .key.equal { grid-column:auto }
+  }
+</style>
+</head>
+<body>
+  <a href="index.php" class="back-btn">return to home</a>
+
+<style>
+.back-btn{
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    background: #0a84ff;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+}
+</style>
+
+  <div class="wrap">
+
+    <div class="calc">
+      <div class="brand">
+        <div class="logo">NC</div>
+        <div>
+          <h1>Neon Calc</h1>
+          <p>Scientific + Base Converter — Dark Neon</p>
+        </div>
+      </div>
+
+      <div class="display-wrap">
+        <div class="sub-display">
+          <div id="modeLabel">RAD</div>
+          <div class="muted">Neon Scientific</div>
+        </div>
+
+        <div id="display">0</div>
+        <div class="muted" style="margin-top:8px">Tip: Use the buttons or click the buttons on the page.</div>
+      </div>
+
+      <div class="kbd" id="keys">
+        <!-- row 1 -->
+        <button class="key accent" onclick="press('(')">(</button>
+        <button class="key accent" onclick="press(')')">)</button>
+        <button class="key" onclick="press('π')">π</button>
+        <button class="key" onclick="press('e')">e</button>
+        <button class="key" onclick="backspace()">DEL</button>
+        <button class="key" onclick="clearAll()">C</button>
+
+        <!-- row 2 -->
+        <button class="key" onclick="press('7')">7</button>
+        <button class="key" onclick="press('8')">8</button>
+        <button class="key" onclick="press('9')">9</button>
+        <button class="key" onclick="press('/')">÷</button>
+        <button class="key" onclick="operate('^2')">x²</button>
+        <button class="key" onclick="operate('^3')">x³</button>
+
+        <!-- row 3 -->
+        <button class="key" onclick="press('4')">4</button>
+        <button class="key" onclick="press('5')">5</button>
+        <button class="key" onclick="press('6')">6</button>
+        <button class="key" onclick="press('*')">×</button>
+        <button class="key" onclick="sqrtBtn()">√</button>
+        <button class="key" onclick="cbrtBtn()">∛</button>
+
+        <!-- row 4 -->
+        <button class="key" onclick="press('1')">1</button>
+        <button class="key" onclick="press('2')">2</button>
+        <button class="key" onclick="press('3')">3</button>
+        <button class="key" onclick="press('-')">−</button>
+        <button class="key" onclick="operate('^')">xʸ</button>
+        <button class="key" onclick="press('%')">%</button>
+
+        <!-- row 5 -->
+        <button class="key wide" onclick="press('0')">0</button>
+        <button class="key" onclick="press('.')">.</button>
+        <button class="key" onclick="press('+')">+</button>
+        <button class="key neon equal wide" onclick="calculate()">=</button>
+
+        <!-- trig/log row -->
+        <button class="key accent" onclick="trig('sin')">sin</button>
+        <button class="key accent" onclick="trig('cos')">cos</button>
+        <button class="key accent" onclick="trig('tan')">tan</button>
+        <button class="key accent" onclick="func('log')">log</button>
+        <button class="key accent" onclick="func('ln')">ln</button>
+        <button class="key accent" onclick="clearHistory()">ClrHist</button>
+      </div>
+
+    </div>
+
+    <div class="panel">
+      <h2>🔧 Settings & Base Converter</h2>
+
+      <div class="row">
+        <div class="deg-toggle" style="flex:1">
+          <label style="font-size:13px; color:var(--muted)">Angle</label>
+          <div style="flex:1"></div>
+          <button class="key accent small" id="degBtn" onclick="toggleDeg()">DEG</button>
+          <button class="key small" onclick="toggleDeg(true)">RAD</button>
+        </div>
+      </div>
+
+      <div style="margin-bottom:10px" class="muted">Current number (from display):</div>
+      <div class="row">
+        <input type="text" id="fromDisplay" readonly />
+      </div>
+
+      <hr style="border:none; height:1px; background:rgba(255,255,255,0.03); margin:12px 0" />
+
+      <h2>🔢 Number System Converter</h2>
+      <div class="muted"></div>Enter a value or press "Use Display" to use the value from the calculator screen</div>
+
+      <div class="row">
+        <input type="text" id="inputVal" placeholder="like: 255 or FF or 1101" />
+        <button class="convert-btn small" onclick="useDisplay()">Use Display</button>
+      </div>
+
+      <div class="row">
+        <select id="fromBase">
+          <option value="2">Binary (2)</option>
+          <option value="8">Octal (8)</option>
+          <option value="10" selected>Decimal (10)</option>
+          <option value="16">Hexadecimal (16)</option>
+        </select>
+
+        <select id="toBase">
+          <option value="2">Binary (2)</option>
+          <option value="8">Octal (8)</option>
+          <option value="10">Decimal (10)</option>
+          <option value="16">Hexadecimal (16)</option>
+        </select>
+      </div>
+
+      <div class="row">
+        <button class="convert-btn" onclick="convertBases()">Convert</button>
+        <input type="text" id="convResult" placeholder="Result" readonly />
+      </div>
+
+      <div style="margin-top:12px" class="muted">History</div>
+      <div class="history" id="history"></div>
+
+      <div style="margin-top:12px; font-size:13px; color:var(--muted)">
+        Notes:
+        <ul style="padding-left:16px; margin-top:6px">
+         <li>xʸ: Use the button, then enter the exponent, then press =</li>
+          <li>You can enter letters A–F for Hex (example: FF)</li>
+            <li>Functions use RAD or DEG depending on the setting.</li>
+
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+
+<script>
+  // State
+  const displayEl = document.getElementById('display');
+  const modeLabel = document.getElementById('modeLabel');
+  const degBtn = document.getElementById('degBtn');
+  const fromDisplay = document.getElementById('fromDisplay');
+  const historyEl = document.getElementById('history');
+
+  let isDeg = false; // false => RAD, true => DEG
+  let hist = [];
+
+  function refreshDisplayText(){
+    fromDisplay.value = displayEl.innerText;
+  }
+
+  // initial
+  refreshDisplayText();
+
+  function setDisplay(val){
+    displayEl.innerText = String(val);
+    refreshDisplayText();
+  }
+
+  function press(ch){
+    if (displayEl.innerText === '0' && ch !== '.') setDisplay(ch);
+    else setDisplay(displayEl.innerText + ch);
+  }
+
+  function clearAll(){
+    setDisplay('0');
+  }
+
+  function backspace(){
+    let s = displayEl.innerText;
+    s = s.slice(0, -1);
+    if (s === '' ) s = '0';
+    setDisplay(s);
+  }
+
+  function calculate(){
+    try{
+      let expr = displayEl.innerText;
+
+      // replace unicode operators with JS ones
+      expr = expr.replace(/÷/g, '/').replace(/×/g, '*').replace(/−/g, '-').replace(/%/g, '/100');
+
+      // handle π and e
+      expr = expr.replace(/π/g, String(Math.PI));
+      expr = expr.replace(/\be\b/g, String(Math.E));
+
+      // handle power operator ^  -> use **
+      expr = expr.replace(/\^/g, "");
+
+      // Evaluate safely (note: eval used for simplicity)
+      let result = Function('"use strict"; return (' + expr + ')')();
+
+      if (typeof result === 'number' && !isFinite(result)) throw 'Error';
+      setDisplay(trimResult(result));
+      pushHistory(expr + " = " + result);
+    }catch(err){
+      setDisplay('Error');
+    }
+  }
+
+  // trim long floats
+  function trimResult(x){
+    if (Number.isInteger(x)) return x;
+    return parseFloat(x.toPrecision(12)).toString();
+  }
+
+  function pushHistory(text){
+    hist.unshift(text);
+    if(hist.length>30) hist.pop();
+    renderHistory();
+  }
+  function renderHistory(){
+    historyEl.innerHTML = '';
+    hist.forEach(it=>{
+      const d = document.createElement('div');
+      d.className = 'item';
+      d.innerText = it;
+      historyEl.appendChild(d);
+    });
+  }
+  function clearHistory(){ hist = []; renderHistory(); }
+
+  // operators that act immediately or wrap
+  function operate(op){
+    try{
+      let cur = displayEl.innerText;
+      // if op is ^2 or ^3
+      if(op === '^2') {
+        let v = Number(evalExpression(cur));
+        if (isNaN(v)) throw 'err';
+        let res = v ** 2;
+        setDisplay(trimResult(res));
+        pushHistory(cur + ' ^2 = ' + res);
+        return;
+      }
+      if(op === '^3') {
+        let v = Number(evalExpression(cur));
+        if (isNaN(v)) throw 'err';
+        let res = v ** 3;
+        setDisplay(trimResult(res));
+        pushHistory(cur + ' ^3 = ' + res);
+        return;
+      }
+      // x^ : append ^ for user
+      if(op === '^') {
+        // avoid double ^ 
+        if (!cur.endsWith('^')) press('^');
+        return;
+      }
+    }catch(e){ setDisplay('Error') }
+  }
+
+  function evalExpression(expr){
+    expr = expr.replace(/÷/g, '/').replace(/×/g, '*').replace(/−/g, '-');
+    expr = expr.replace(/π/g, String(Math.PI));
+    expr = expr.replace(/\be\b/g, String(Math.E));
+    expr = expr.replace(/\^/g, "");
+    return Function('"use strict"; return (' + expr + ')')();
+  }
+
+  // sqrt & cbrt
+  function sqrtBtn(){
+    try{
+      let v = evalExpression(displayEl.innerText);
+      if (v<0) { setDisplay('Error'); return; }
+      let r = Math.sqrt(v);
+      setDisplay(trimResult(r));
+      pushHistory('√(' + v + ') = ' + r);
+    }catch(e){ setDisplay('Error') }
+  }
+
+  function cbrtBtn(){
+    try{
+      let v = evalExpression(displayEl.innerText);
+      let r = Math.cbrt(v);
+      setDisplay(trimResult(r));
+      pushHistory('∛(' + v + ') = ' + r);
+    }catch(e){ setDisplay('Error') }
+  }
+
+  // trig and logs
+  function toRad(x){
+    return isDeg ? x * Math.PI / 180 : x;
+  }
+
+  function trig(fn){
+    try{
+      let v = evalExpression(displayEl.innerText);
+      let arg = toRad(Number(v));
+      let res;
+      if(fn === 'sin') res = Math.sin(arg);
+      if(fn === 'cos') res = Math.cos(arg);
+      if(fn === 'tan') res = Math.tan(arg);
+      setDisplay(trimResult(res));
+      pushHistory(fn + '(' + v + ') = ' + res);
+    }catch(e){ setDisplay('Error') }
+  }
+
+  function func(fname){
+    try{
+      let v = Number(evalExpression(displayEl.innerText));
+      let res;
+      if(fname === 'log'){ // log10
+        if(v <= 0) { setDisplay('Error'); return; }
+        res = Math.log10(v);
+      }
+      if(fname === 'ln'){
+        if(v <= 0) { setDisplay('Error'); return; }
+        res = Math.log(v);
+      }
+      setDisplay(trimResult(res));
+      pushHistory(fname + '(' + v + ') = ' + res);
+    }catch(e){ setDisplay('Error') }
+  }
+
+  // constants
+  (function attachConstants(){
+    document.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click', ()=> refreshDisplayText());
+    });
+  })();
+
+  // degree / rad toggle
+  function toggleDeg(forceRad=false){
+    if(forceRad){ isDeg = false; }
+    else isDeg = !isDeg;
+    modeLabel.innerText = isDeg ? 'DEG' : 'RAD';
+    degBtn.innerText = isDeg ? 'DEG' : 'DEG';
+  }
+
+  // use display in converter
+  function useDisplay(){
+    document.getElementById('inputVal').value = displayEl.innerText;
+  }
+
+  // converter
+  function convertBases(){
+    const input = document.getElementById('inputVal').value.trim();
+    const from = parseInt(document.getElementById('fromBase').value, 10);
+    const to = parseInt(document.getElementById('toBase').value, 10);
+    if(input === '') { document.getElementById('convResult').value = 'Enter value'; return; }
+
+    try{
+      // For hex, allow letters
+      // parseInt handles negative sign
+      const decimal = parseInt(input, from);
+      if(isNaN(decimal)) { document.getElementById('convResult').value = 'Invalid input for base ' + from; return; }
+
+      let out;
+      if(to === 10) out = String(decimal);
+      else out = decimal.toString(to).toUpperCase();
+
+      document.getElementById('convResult').value = out;
+      pushHistory('conv: ' + input + ' (base ' + from + ') → ' + out + ' (base ' + to + ')');
+    }catch(e){
+      document.getElementById('convResult').value = 'Error';
+    }
+  }
+
+  // small helpers
+  function sqrt(x){ return Math.sqrt(x) }
+  function cbrt(x){ return Math.cbrt(x) }
+
+  // allow keyboard input basic (numbers and operators)
+  window.addEventListener('keydown', (e)=>{
+    const k = e.key;
+    if((/^[0-9.+\-*/()%^]$/.test(k)) || k === 'Enter' || k === 'Backspace' || k === 'Delete') {
+      e.preventDefault();
+      if(k === 'Enter') calculate();
+      else if(k === 'Backspace') backspace();
+      else if(k === 'Delete') clearAll();
+      else if(k === '^') press('^');
+      else press(k);
+    }
+    // allow letters for hex (a-f)
+    if(/[a-fA-F]/.test(k)) { e.preventDefault(); press(k.toUpperCase()); }
+  });
+
+  // keep display sync
+  setInterval(()=>{ refreshDisplayText(); }, 800);
+
+</script>
+</body>
+</html>
+        </div>
+    </section>
+</body>
+</html>
