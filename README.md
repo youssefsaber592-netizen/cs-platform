@@ -1,45 +1,78 @@
-CS Learning Platform
+# 🚀 CS Courses - Digital Platform
 
-A modern and user-friendly web platform designed to provide high-quality Computer Science courses in a simple, organized, and interactive way.
+Welcome to the **CS Courses** web platform project! This project provides a modern, responsive, and seamless educational interface designed to display comprehensive digital solutions, tech courses, interactive service offerings, and registration tools.
 
-This website aims to help students and beginners learn core CS topics such as programming, data structures, algorithms, databases, web development, and more — all in one place.
+---
 
- Features
+## 📸 Visual Showcase & Project Structure
 
-Clean and responsive UI design
+Below is a structured overview of the platform's user interface, organized from the top-level Hero landing page down to specific services, course tracks, and registration flow.
 
-Organized course structure by topics
+<div align="center">
 
-Easy navigation between lessons
+### 1️⃣ Hero & Main Overview
+*The high-impact entry point of the application showcasing core value propositions and statistics.*
 
-Interactive learning experience
+<img src="./screenshots/Screenshot 2026-08-03 023336.png" alt="Hero Section" width="85%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
 
-Beginner-friendly content
+<br/><br/>
 
-Covers essential Computer Science tracks
+### 2️⃣ Comprehensive Digital Services & Solutions
+*Detailed breakdown of core technical tracks including Web, Mobile, Cloud, AI, Data Analysis, and UI/UX.*
 
- Topics Covered
+<table border="0" width="100%">
+  <tr>
+    <td width="50%" align="center">
+      <img src="./screenshots/Screenshot 2026-08-03 023350.png" alt="Services Overview - Part 1" width="100%" style="border-radius: 6px;" />
+      <p><b>Core Tracks: Web, Mobile & Cloud</b></p>
+    </td>
+    <td width="50%" align="center">
+      <img src="./screenshots/Screenshot 2026-08-03 023405.png" alt="Services Overview - Part 2" width="100%" style="border-radius: 6px;" />
+      <p><b>Specialized Tracks: AI, Data & UI/UX</b></p>
+    </td>
+  </tr>
+</table>
 
-Programming Fundamentals
+<br/>
 
-Data Structures & Algorithms
+### 3️⃣ Interactive Course Tracks & Technologies
+*Interactive catalog displaying technology stacks (Flutter, Swift, React, Backend, Full Stack, Data Analysis).*
 
-Databases
+<img src="./screenshots/Screenshot 2026-08-03 023423.png" alt="Course Catalog" width="85%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
 
-Web Development
+<br/><br/>
 
-Problem Solving
+### 4️⃣ Registration & Interactive Form
+*Seamless user onboarding, course selection, and contact portal.*
 
-Software Engineering basics
+<img src="./screenshots/Screenshot 2026-08-03 023503.png" alt="Registration Form" width="60%" style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);" />
 
- Goal
+</div>
 
-The goal of this platform is to simplify Computer Science education and make learning more accessible for students who want a clear roadmap and structured content.
+---
 
- Built With
+## ✨ Features
 
-HTML
+- **Responsive Design:** Optimized layout for modern desktops, tablets, and mobile displays.
+- **Comprehensive Course Tracks:** Dedicated sections for Web Development, Mobile Apps (iOS/Android), AI & ML, Data Analysis, UI/UX Design, and Cloud Solutions.
+- **Interactive Course Selection:** Custom registration form with dynamic track selection.
+- **Direct Contact & Support Integration:** Built-in contact overview with 24-hour turnaround guarantees.
 
-CSS
+---
 
-JavaScript
+## 📁 Repository Structure
+
+```text
+cs-platform/
+├── css/                  # Custom CSS stylesheets
+├── images/               # Web assets & graphic elements
+├── planning/             # Project documentation & architectural plans
+├── screenshots/          # Platform UI screenshots
+│   ├── Screenshot 2026-08-03 023336.png
+│   ├── Screenshot 2026-08-03 023350.png
+│   ├── Screenshot 2026-08-03 023405.png
+│   ├── Screenshot 2026-08-03 023423.png
+│   └── Screenshot 2026-08-03 023503.png
+├── webfonts/             # Typography assets
+├── README.md             # Project documentation
+└── System Analysis.pdf   # Complete system architecture breakdown
